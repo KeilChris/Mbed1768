@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'LPC1768' 
- * Target:  'Target 1' 
+ * Project: 'LPC1768.Target_1' 
+ * Target:  'Target_1' 
  */
 
 #ifndef RTE_COMPONENTS_H
@@ -16,7 +16,7 @@
  */
 #define CMSIS_device_header "LPC17xx.h"
 
-/* ARM::CMSIS:RTOS2:Keil RTX5:Source:5.5.3 */
+/* ARM::CMSIS:RTOS2:Keil RTX5:Source:5.5.4 */
 #define RTE_CMSIS_RTOS2                 /* CMSIS-RTOS2 */
         #define RTE_CMSIS_RTOS2_RTX5            /* CMSIS-RTOS2 Keil RTX5 */
         #define RTE_CMSIS_RTOS2_RTX5_SOURCE     /* CMSIS-RTOS2 Keil RTX5 Source */
