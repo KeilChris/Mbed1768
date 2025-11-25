@@ -1,0 +1,34 @@
+solution:
+  created-by: uv2csolution@1.6.0
+  created-for: CMSIS-Toolbox@2.12.0
+  cdefault:
+  compiler: AC6
+  target-types:
+    - type: Mbed1768
+      device: LPC1768
+      target-set:
+        - set:
+          images:
+            - project-context: LPC1768.Debug
+          debugger:
+            name: CMSIS-DAP@pyOCD
+
+  # List of different build configurations.
+  build-types:
+    - type: Debug
+      debug: on
+      optimize: none
+
+    - type: Release
+      debug: off
+      optimize: balanced
+
+  misc:
+    - for-compiler: AC6
+      C-CPP:
+        - -gdwarf-5
+      ASM:
+        - -gdwarf-5
+
+  projects:
+    - project: ./LPC1768.cproject.yml
