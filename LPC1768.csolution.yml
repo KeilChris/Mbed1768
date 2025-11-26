@@ -3,6 +3,12 @@ solution:
   created-for: CMSIS-Toolbox@2.12.0
   cdefault:
   compiler: AC6
+
+  # Project define
+  define:
+    - OS_IDLE_THREAD_NAME: \"Idle\"
+    - OS_TIMER_THREAD_NAME: \"Timer\"
+
   target-types:
     - type: Mbed1768
       device: LPC1768
@@ -12,6 +18,9 @@ solution:
             - project-context: LPC1768.Debug
           debugger:
             name: CMSIS-DAP@pyOCD
+            port: 3333
+            protocol: swd
+            clock: 10000000
 
   # List of different build configurations.
   build-types:
