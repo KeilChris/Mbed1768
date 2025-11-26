@@ -7,6 +7,8 @@ The application blinks all LEDs one after another in a 1 second interval.
 
 Refer to [Project Configuration](#project-configuration) for board specific settings.
 
+![Mbed LPC1768 Pinout](./images/lpc1768_pinout.png)
+
 ## Prerequisites
 
 The following tools need to be installed on your machine:
@@ -38,6 +40,24 @@ It is configured with the following settings:
 
 Refer to [Configure RTX v5](https://arm-software.github.io/CMSIS-RTX/latest/config_rtx5.html) for a detailed
 description of all configuration options.
+
+#### GPIO Configuration and usage
+
+| Pin   | Peripheral | Signal    | Identifier | Pin Settings
+|:------|:-----------|:----------|:-----------|:------------
+| P1.18 | GPIO1      | 18        | LED1       | default
+| P1.20 | GPIO1      | 20        | LED2       | default
+| P1.21 | GPIO1      | 21        | LED3       | default
+| P1.23 | GPIO1      | 23        | LED4       | default
+
+#### CMSIS-Driver mapping
+
+| CMSIS-Driver VIO  | Physical board hardware
+|:------------------|:-----------------------
+| vioLED0           | LED1
+| vioLED1           | LED2
+| vioLED2           | LED3
+| vioLED3           | LED4
 
 ## Build solution
 
