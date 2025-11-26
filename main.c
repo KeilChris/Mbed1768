@@ -32,12 +32,14 @@
  *----------------------------------------------------------------------------*/
 
 #include "cmsis_os2.h"                  // ::CMSIS:RTOS2
+#include "main.h"
+#include "main.h"
+#include "RTE_Components.h"
+#include CMSIS_device_header
 
-#include "LPC17xx.h"                    // Device header
-#include "Board_LED.h"                  // ::Board Support:LED
-
-
-extern void app_main (void *arg);
+// #include "LPC17xx.h"                    // Device header
+// #include "Board_LED.h"                  // ::Board Support:LED
+#include "cmsis_vio.h"
 
 /*----------------------------------------------------------------------------
  * main function
@@ -45,10 +47,11 @@ extern void app_main (void *arg);
 int main (void) {
 
   SystemCoreClockUpdate ();             // System Initialization
-  LED_Initialize ();                    // Initialize LEDs
-
-  osKernelInitialize ();                // Initialize CMSIS-RTOS
-  osThreadNew (app_main, NULL, NULL);   // Create application main thread
-  osKernelStart ();                     // Start thread execution
+  // LED_Initialize ();                    // Initialize LEDs
+  vioInit();
+  app_main();
+  // osKernelInitialize ();                // Initialize CMSIS-RTOS
+  // osThreadNew (app_main, NULL, NULL);   // Create application main thread
+  // osKernelStart ();                     // Start thread execution
   for (;;) {}
 }

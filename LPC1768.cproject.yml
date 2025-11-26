@@ -1,6 +1,7 @@
 project:
   packs:
-    - pack: ARM::CMSIS@^5.9.0
+    - pack: ARM::CMSIS
+    - pack: ARM::CMSIS-RTX
     - pack: Keil::LPC1700_DFP@^2.7.1
 
   linker:
@@ -8,19 +9,22 @@ project:
   groups:
     - group: Sources
       files:
-        - file: LED_1768.c
-        - file: Board_LED.h
+        # - file: LED_1768.c
+        # - file: Board_LED.h
         - file: Blinky.c
         - file: main.c
+        - file: vio_Mbed_LPC1768.c
     - group: Documentation
       files:
         - file: README.md
   components:
     - component: ARM::CMSIS:CORE
+    - component: ARM::CMSIS:OS Tick:SysTick
     - component: ARM::CMSIS:RTOS2:Keil RTX5&Source
     - component: Keil::Device:GPIO
     - component: Keil::Device:PIN
     - component: Keil::Device:Startup
+    - component: CMSIS Driver:VIO:Custom
 
   # List executable file formats to be generated.
   output:

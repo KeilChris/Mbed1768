@@ -1,14 +1,11 @@
 cbuild-pack:
   resolved-packs:
-    - resolved-pack: ARM::CMSIS@5.9.0
+    - resolved-pack: ARM::CMSIS@6.2.0
       selected-by-pack:
-        - ARM::CMSIS@^5.9.0
-    - resolved-pack: ARM::CMSIS-DSP@1.16.2
+        - ARM::CMSIS
+    - resolved-pack: ARM::CMSIS-RTX@5.9.0
       selected-by-pack:
-        - ARM::CMSIS-DSP@^1.10.1
-    - resolved-pack: ARM::CMSIS-NN@4.1.0
-      selected-by-pack:
-        - ARM::CMSIS-NN@^4.0.0
+        - ARM::CMSIS-RTX
     - resolved-pack: Keil::LPC1700_DFP@2.7.2
       selected-by-pack:
         - Keil::LPC1700_DFP@^2.7.1

@@ -30,32 +30,77 @@
  * Name:    Blinky.c
  * Purpose: LED Flasher
  *----------------------------------------------------------------------------*/
-
+#include "main.h"
 #include "cmsis_os2.h"                  // ARM::CMSIS:RTOS:Keil RTX5
-#include "Board_LED.h"                  // Board Support:LED
+// #include "Board_LED.h"                  // Board Support:LED
+#include "cmsis_vio.h"                  // ARM::CMSIS:VIO
+#include "GPIO_LPC17xx.h"               // For direct GPIO access
+#include "LPC17xx.h"                    // For direct register access
 
 static osThreadId_t tid_thrLED;         // Thread id of thread: LED
+volatile     uint32_t g_ledSet = 0;     // Global variable to store LED values:
+                                        // 0 = LED0 off, LED1 off
+                                        // 1 = LED0 on,  LED1 off
+                                        // 2 = LED0 off, LED1 on
+                                        // 3 = LED0 on,  LED1 on
+
+// External counter from vio to verify function calls
+extern volatile uint32_t vioSetSignalCallCount;
+
+// Create thread attribute to show thread name in the XRTOS viewer:
+const osThreadAttr_t app_main_attr  = {.name = "MainThread"};
+const osThreadAttr_t thrLED_attr    = {.name = "LEDThread"};
 
 /*------------------------------------------------------------------------------
   thrLED: blink LED
  *----------------------------------------------------------------------------*/
-__NO_RETURN void thrLED (void *argument) {
+static __NO_RETURN void thrLED (void *argument) {
+
+  (void)argument;
+  
+  // Re-initialize LED pins from within the thread
+  LPC_GPIO1->FIODIR |= (1UL << 18) | (1UL << 20) | (1UL << 21) | (1UL << 23);  // Set as outputs
 
   for (;;) {
-      LED_On (3U);                                // Switch LED on
-      osDelay (500U);                             // Delay 500 ms
-      LED_Off (3U);                               // Switch off
-      osDelay (500U);                             // Delay 500 ms
+    // Store call count for debugging
+    g_ledSet++;
+    
+    // Force register writes with volatile pointer and memory barrier
+    __DMB();  // Data Memory Barrier
+    LPC_GPIO1->FIOSET = (1UL << 18) | (1UL << 21);  // Turn on LED0 and LED2
+    __DMB();
+    
+    vioSetSignal(vioLED0, vioLEDon);
+    osDelay (500U);
+    
+    __DMB();
+    LPC_GPIO1->FIOCLR = (1UL << 18) | (1UL << 21);  // Turn off LED0 and LED2
+    __DMB();
+    
+    vioSetSignal(vioLED0, vioLEDoff);
+    osDelay (500U);
   }
 }
 
-/*------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------
  * Application main thread
- *----------------------------------------------------------------------------*/
-void app_main (void *argument) {
+ *---------------------------------------------------------------------------*/
+static void app_main_thread (void *argument) {
+  (void)argument;
 
-  tid_thrLED = osThreadNew (thrLED, NULL, NULL);  // Create LED thread
+  tid_thrLED = osThreadNew(thrLED, NULL, &thrLED_attr);         // Create LED thread
   if (tid_thrLED == NULL) { /* add error handling */ }
 
-  osThreadExit();
+  for (;;) {                            // Loop forever
+  }
+}
+
+/*-----------------------------------------------------------------------------
+  Application initialization
+ *----------------------------------------------------------------------------*/
+int app_main (void) {
+  osKernelInitialize();                         /* Initialize CMSIS-RTOS2 */
+  osThreadNew(app_main_thread, NULL, &app_main_attr);
+  osKernelStart();                              /* Start thread execution */
+  return 0;                                    /* Should never reach here */
 }
